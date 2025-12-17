@@ -1,0 +1,16 @@
+{
+  "compilerOptions": {
+    "target": "ES2020",
+    "module": "CommonJS",
+    "moduleResolution": "Node",
+    "esModuleInterop": true,
+    "resolveJsonModule": true,
+    "strict": true,
+    "outDir": "dist",
+    "baseUrl": "./",
+    "paths": {
+      "@lib/*": ["src/lib/*"]
+    }
+  },
+  "include": ["api/**/*", "src/**/*"]
+}
