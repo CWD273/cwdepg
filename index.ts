@@ -1,4 +1,4 @@
-// api/epg.ts
+// api/index.ts
 import type { VercelRequest, VercelResponse } from '@vercel/node';
 import fetch from 'node-fetch';
 
@@ -10,12 +10,11 @@ import { buildXmltv } from '../src/lib/xmltvBuilder';
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
   try {
-    const m3uUrl =
-      (req.query.m3u as string | undefined) ??
-      'https://cwdiptvb.github.io/tv_channels.m3u'; // adjust if different
+    // Always use your playlist
+    const m3uUrl = 'https://cwdiptvb.github.io/tv_channels.m3u';
 
-    const days = parseInt((req.query.days as string) ?? '3', 10);
-    const safeDays = Number.isNaN(days) ? 3 : Math.min(Math.max(days, 1), 14);
+    // Default to 3 days of EPG (you can change this)
+    const days = 3;
 
     // 1. Fetch and parse M3U
     const m3uRes = await fetch(m3uUrl);
@@ -33,7 +32,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     const mappedChannels = await matchChannelsWithAI(normalizedChannels);
 
     // 4. Fetch EPG data from configured EPG sources
-    const programmes = await fetchEpgFromSources(mappedChannels, { days: safeDays });
+    const programmes = await fetchEpgFromSources(mappedChannels, { days });
 
     // 5. Build XMLTV
     const xml = buildXmltv(mappedChannels, programmes);
